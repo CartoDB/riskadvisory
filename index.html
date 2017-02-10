@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
     <head>
         <meta charset="UTF-8">
         <title>Risk Advisory</title>
@@ -9,38 +9,48 @@
         <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
         <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
     </head>
-    <body>
-        <div style="height: 700px" id="map"></div>
+    <body style="height: 100%; margin: 0">
+        <div style="height: 100%" id="map"></div>
 
         <script>
-            var kpi_selector_html = function (kpis, title) {
+            var kpi_selector_html = function (kpis, title, enabled, selector_class) {
                 kpis_html = "";
                 kpis_count = 0;
                 for (var column in kpis) {
-                    kpis_html += '<li><a id="' + column + '" class="layer" href="#">' + kpis[column] + '</a><a href="#" class="kpi right ' + (kpis_count === 0 ? 'enabled' : 'disabled') + ' switch"><span class="handle"></span></a></li>';
+                    kpis_html += '<li><a class="layer" href="#">' + kpis[column] + '</a><a id="' + column + '" href="#" class="kpi right ' + (column === enabled ? 'enabled' : 'disabled') + ' switch"><span class="handle"></span></a></li>';
                     kpis_count++;
                 }
-                return '<div class="cartodb-layer-selector-box" style="display: block;"><a href="#" class="layers kpis">' + title + '<div class="count">' + kpis_count + '</div></a><div class="cartodb-dropdown border" style="width: 160px; top: 35px; left: -16.9999px;"><ul>' + kpis_html + '</ul><div class="tail"><span class="border"></span></div></div></div>';
+                return '<div class="cartodb-layer-selector-box ' + selector_class + '" style="display: block;"><a href="#" class="layers kpis">' + title + '<div class="count">' + kpis_count + '</div></a><div class="cartodb-dropdown border" style="width: 160px; top: 35px; left: -16.9999px;"><ul>' + kpis_html + '</ul><div class="tail"><span class="border"></span></div></div></div>';
             };
 
             var city_kpis = {
-                city_rating: "City rating",
-                security: "Security",
-                regime_instabilty: "Regime instability"
-            };
-
-            var country_kpis = {
                 country_rating: "Country rating",
-                security: "Security",
-                regime_instabilty: "Regime instability"
+                security_risk: "Security risk",
+                regime_instability: "Regime instability",
+                civil_conflict: "Civil conflict",
+                interstate_conflict: "Interstate conflict",
+                civil_unrest: "Civil unrest",
+                terrorism: "Terrorism",
+                street_crime: "Street crime",
+                serious_crime: "Serious crime",
+                kidnap: "Kidnap",
+                state_agencies: "State agencies",
+                rule_of_law: "Rule of law",
+                corruption: "Corruption",
+                legal_and_regulatory: "Legal and regulatory",
+                natural_hazards: "Natural  hazards",
+                infrastructure: "Infrastructure",
+                medical_health: "Medical & healt"
             };
 
-            var vizJson = "https://riskadvisory.carto.com/user/riskadvisory-admin/api/v2/viz/4ff3957e-e3eb-11e6-999f-0e3ebc282e83/viz.json";
+            var country_kpis = city_kpis;
+
+            var vizJson = "https://team.carto.com/user/dcarrion/api/v2/viz/245cb208-ef88-11e6-9a09-0ecd1babdde5/viz.json";
             cartodb.createVis("map", vizJson, {shareable: false, legends: false})
             .done(function(vis, layers) {
-                $(".cartodb-map-wrapper").prepend(kpi_selector_html(city_kpis, "City ratings"));
-                $(".cartodb-map-wrapper").prepend(kpi_selector_html(country_kpis, "Country ratings"));
-                $(".cartodb-map-wrapper").append('<div class="cartodb-legend-stack" style="display: block;"><div class="cartodb-legend category" style="display: block;"><div class="legend-title">Colors</div><ul><li><div class="bullet" style="background: #A6CEE3"></div> CRITICAL</li><li><div class="bullet" style="background: #1F78B4"></div> IMPORTANT</li><li><div class="bullet" style="background: #B2DF8A"></div> INTERESTING</li><li><div class="bullet" style="background: #33A02C"></div> WARNING</li><li><div class="bullet" style="background: #FB9A99"></div> INFO</li><li><div class="bullet" style="background: #E31A1C"></div> NOTHING</li></ul></div></div>');
+                $(".cartodb-map-wrapper").prepend(kpi_selector_html(city_kpis, "City ratings", "civil_unrest", "cities"));
+                $(".cartodb-map-wrapper").prepend(kpi_selector_html(country_kpis, "Country ratings", "civil_unrest", "countries"));
+                $(".cartodb-map-wrapper").append('<div class="cartodb-legend-stack" style="display: block;"><div class="cartodb-legend category" style="display: block;"><div class="legend-title">Colors</div><ul><li><div class="bullet" style="background: #B1BEC8"></div> NEGLIGIBLE</li><li><div class="bullet" style="background: #9EA615"></div> LOW</li><li><div class="bullet" style="background: #E3CA25"></div> MODERATE</li><li><div class="bullet" style="background: #F26432"></div> SUBSTANTIAL/HIGH</li><li><div class="bullet" style="background: #DA383F"></div> SEVERE</li><li><div class="bullet" style="background: #7E150A"></div> CRITICAL/EXTREME</li></ul></div></div>');
 
                 $(".kpis").click(function () {
                     event.stopPropagation();
@@ -56,6 +66,11 @@
                         $(this).removeClass("enabled");
                         $(this).addClass("disabled");
                     });
+                    if ($(this).parents('.cities').length) {
+                        layers[1].setCartoCSS(1, "#layer {marker-width: 7; marker-fill: ramp([" + $(this).attr("id") + '], (#B1BEC8, #9EA615, #E3CA25, #F26432, #DA383F, #7E150A), (1, 2, 3, 4, 5, 6), "=", category); marker-fill-opacity: 1; marker-allow-overlap: true; marker-line-width: 1; marker-line-color: #FFF; marker-line-opacity: 1;}', cartodb.CARTOCSS_DEFAULT_VERSION);
+                    } else if ($(this).parents('.countries').length) {
+                        layers[1].setCartoCSS(0, "polygon-fill: ramp([" + $(this).attr("id") + '], (#B1BEC8, #9EA615, #E3CA25, #F26432, #DA383F, #7E150A), (1, 2, 3, 4, 5, 6), "=", category); line-width: 1; line-color: #FFF; line-opacity: 0.5;', cartodb.CARTOCSS_DEFAULT_VERSION);
+                    }
                 });
             });
         </script>
