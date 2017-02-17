@@ -17,10 +17,10 @@
                 kpis_html = "";
                 kpis_count = 0;
                 for (var column in kpis) {
-                    kpis_html += '<li><a class="layer" href="#">' + kpis[column] + '</a><a id="' + column + '" href="#" class="kpi right ' + (column === enabled ? 'enabled' : 'disabled') + ' switch"><span class="handle"></span></a></li>';
+                    kpis_html += '<li><a class="layer" style="width: 204px" href="#">' + kpis[column] + '</a><a id="' + column + '" href="#" class="kpi right ' + (column === enabled ? 'enabled' : 'disabled') + ' switch"><span class="handle"></span></a></li>';
                     kpis_count++;
                 }
-                return '<div class="cartodb-layer-selector-box ' + selector_class + '" style="display: block;"><a href="#" class="layers kpis">' + title + '<div class="count">' + kpis_count + '</div></a><div class="cartodb-dropdown border" style="width: 160px; top: 35px; left: -16.9999px;"><ul>' + kpis_html + '</ul><div class="tail"><span class="border"></span></div></div></div>';
+                return '<div class="cartodb-layer-selector-box ' + selector_class + '" style="display: block;"><a href="#" class="layers kpis">' + title + '<div class="count">' + kpis_count + '</div></a><div class="cartodb-dropdown border" style="width: 260px; top: 35px; left: -116.9999px;"><ul>' + kpis_html + '</ul><div class="tail"><span class="border"></span></div></div></div>';
             };
 
             var city_kpis = {
@@ -64,7 +64,7 @@
                 medical_health: "Medical & health"
             };
 
-            var vizJson = "https://team.carto.com/user/dcarrion/api/v2/viz/245cb208-ef88-11e6-9a09-0ecd1babdde5/viz.json";
+            var vizJson = "https://riskadvisory-admin.carto.com/api/v2/viz/57f978d6-f504-11e6-8111-0ecd1babdde5/viz.json";
             cartodb.createVis("map", vizJson, {shareable: false, legends: false})
             .done(function(vis, layers) {
                 $(".cartodb-map-wrapper").prepend(kpi_selector_html(city_kpis, "City ratings", "city_rating", "cities"));
