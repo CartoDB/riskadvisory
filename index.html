@@ -91,6 +91,8 @@
                 layers[1].layers[0].infowindow.template = $('#infowindow_template').html();
                 layers[1].layers[1].infowindow.template = $('#infowindow_template').html();
 
+                layers[1].setCartoCSS(0, "#layer {polygon-fill: ramp([country_rating], (rgba(236,240,246,.6), rgba(178,194,219,.6), rgba(155,176,208,.6), rgba(132,158,197,.6), rgba(97,130,181,.6), rgba(78,113,166,.6), rgba(67,97,143,.6)), quantiles); line-width: 1; line-color: #FFF; line-opacity: 0.5;}", cartodb.CARTOCSS_DEFAULT_VERSION);
+
                 $(".kpis").click(function () {
                     event.stopPropagation();
                     event.preventDefault();
@@ -107,15 +109,15 @@
                     });
                     if ($(this).parents('.cities').length) {
                         if ($(this).attr("id") == "city_rating") {
-                            layers[1].setCartoCSS(1, "#layer {marker-width: 7; marker-fill: ramp([city_rating], (#43618F, #4E71A6, #6182B5, #849EC5, #9BB0D0, #B2C2DB, #ECF0F6), quantiles); marker-fill-opacity: 1; marker-allow-overlap: true; marker-line-width: 1; marker-line-color: #FFF; marker-line-opacity: 1;}", cartodb.CARTOCSS_DEFAULT_VERSION);
+                            layers[1].setCartoCSS(1, "#layer {marker-width: 7; marker-fill: ramp([city_rating], (#ECF0F6, #B2C2DB, #9BB0D0, #849EC5, #6182B5, #4E71A6, #43618F), quantiles); marker-fill-opacity: 1; marker-allow-overlap: true; marker-line-width: 1; marker-line-color: #FFF; marker-line-opacity: 1;}", cartodb.CARTOCSS_DEFAULT_VERSION);
                         } else {
                             layers[1].setCartoCSS(1, "#layer {marker-width: 7; marker-fill: ramp([" + $(this).attr("id") + '], (#B1BEC8, #9EA615, #E3CA25, #F26432, #DA383F, #7E150A), (1, 2, 3, 4, 5, 6), "=", category); marker-fill-opacity: 1; marker-allow-overlap: true; marker-line-width: 1; marker-line-color: #FFF; marker-line-opacity: 1;}', cartodb.CARTOCSS_DEFAULT_VERSION);
                         }
                     } else if ($(this).parents('.countries').length) {
                         if ($(this).attr("id") == "country_rating") {
-                            layers[1].setCartoCSS(0, "#layer {polygon-fill: ramp([country_rating], (#43618F, #4E71A6, #6182B5, #849EC5, #9BB0D0, #B2C2DB, #ECF0F6), quantiles); line-width: 1; line-color: #FFF; line-opacity: 0.5;}", cartodb.CARTOCSS_DEFAULT_VERSION);
+                            layers[1].setCartoCSS(0, "#layer {polygon-fill: ramp([country_rating], (rgba(236,240,246,.6), rgba(178,194,219,.6), rgba(155,176,208,.6), rgba(132,158,197,.6), rgba(97,130,181,.6), rgba(78,113,166,.6), rgba(67,97,143,.6)), quantiles); line-width: 1; line-color: #FFF; line-opacity: 0.5;}", cartodb.CARTOCSS_DEFAULT_VERSION);
                         } else {
-                            layers[1].setCartoCSS(0, "#layer {polygon-fill: ramp([" + $(this).attr("id") + '], (#B1BEC8, #9EA615, #E3CA25, #F26432, #DA383F, #7E150A), (1, 2, 3, 4, 5, 6), "=", category); line-width: 1; line-color: #FFF; line-opacity: 0.5;}', cartodb.CARTOCSS_DEFAULT_VERSION);
+                            layers[1].setCartoCSS(0, "#layer {polygon-fill: ramp([" + $(this).attr("id") + '], (rgba(177,190,200,.6), rgba(158,166,21,.6), rgba(227,202,37,.6), rgba(242,100,50,.6), rgba(218,56,63,.6), rgba(126,21,10,.6)), (1, 2, 3, 4, 5, 6), "=", category); line-width: 1; line-color: #FFF; line-opacity: 0.5;}', cartodb.CARTOCSS_DEFAULT_VERSION);
                         }
                     }
                 });
