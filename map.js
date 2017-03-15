@@ -1,6 +1,4 @@
 (function () {
-    window.myapp = window.myapp || {};
-
     window.onload = function () {
         var kpi_selector_html = function (kpis, title, enabled, selector_class) {
             kpis_html = "";
